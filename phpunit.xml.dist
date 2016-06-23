@@ -1,0 +1,12 @@
+
+<phpunit
+    bootstrap="./tests/bootstrap.php"
+    colors="true"
+    backupGlobals="false"
+>
+    <testsuites>
+        <testsuite name="PaylineModule Test Suite">
+            <directory>./tests/PaylineModuleTest</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

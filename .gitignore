@@ -1,0 +1,10 @@
+.idea
+vendor
+composer.lock
+composer.phar
+phpunit.xml
+phpmd.xml
+phpdox.xml
+.project
+nbproject
+tests/TestConfiguration.php
