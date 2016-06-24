@@ -1,20 +1,25 @@
 <?php
 
+use PaylineModule\Utils\Env;
+
 return [
     'payline' => [
-        'merchant_id'    => '',
-        'access_key'     => '',
+        'merchantId'    => '',
+        'accessKey'     => '',
         'contractNumber' => '',
-        'proxy_host'     => '',
-        'proxy_port'     => '',
-        'proxy_login'    => '',
-        'proxy_password' => '',
-        'environment'    => '',
-        'log_path'       => ''
+        'proxyHost'     => '',
+        'proxyPort'     => '',
+        'proxyLogin'    => '',
+        'proxyPassword' => '',
+        'environment'    => Env::HOMO,
+        'logPath'       => '',
+        'returnURL' => ['route' => 'home', ['action' => '']],
+        'cancelURL' => ['route' => 'home', ['action' => '']],
+        'notificationURL' => ['route' => 'home', ['action' => '']]
     ],
     'service_manager' => [
         'factories' => [
-            'payline' => \PaylineModule\Service\PaylineService::class,
+            'payline' => \PaylineModule\Service\Factory\PaylineFactory::class,
         ],
     ]
 ];

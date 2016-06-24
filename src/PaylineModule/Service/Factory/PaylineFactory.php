@@ -1,21 +1,14 @@
 <?php
 
-namespace TicketingAdmin\Service\Factory;
+namespace PaylineModule\Service\Factory;
 
 use PaylineModule\Service\PaylineService;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Payline\PaylineSDK;
 
-class ExtractorFactory implements ServiceLocatorAwareInterface
+class PaylineFactory implements FactoryInterface
 {
-    use ServiceLocatorAwareTrait;
-
-    /**
-     * @var array $config
-     */
-    private $config;
-
     /**
      * Create service
      *
@@ -24,34 +17,28 @@ class ExtractorFactory implements ServiceLocatorAwareInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $this->setServiceLocator($serviceLocator);
+        $config = $serviceLocator->get('config')['payline'];
 
-        return new PaylineService($this->getConfig(), $this->getClient());
-    }
-    
-    private function getConfig()
-    {
-        if(is_array($this->config))
+        /** @var \Zend\View\Helper\Url $url */
+        $url = $serviceLocator->get('ViewHelperManager')->get('url');
+
+        if (!file_exists($config['logPath']))
         {
-            return $this->config;
+            mkdir($config['logPath']);
+            chmod($config['logPath'], 0777);
         }
 
-        return $this->config = $this->getServicelocator()->get('config')['payline'];
-    }
-
-    private function getClient()
-    {
-        $config = $this->getConfig();
-
-        return new PaylineSDK(
-            $config['merchant_id'],
-            $config['access_key'],
-            $config['proxy_host'],
-            $config['proxy_port'],
-            $config['proxy_login'],
-            $config['proxy_password'],
+        $payline = new PaylineSDK(
+            $config['merchantId'],
+            $config['accessKey'],
+            $config['proxyHost'],
+            $config['proxyPort'],
+            $config['proxyLogin'],
+            $config['proxyPassword'],
             $config['environment'],
-            $config['log_path']
+            $config['logPath']
         );
+
+        return new PaylineService($config, $payline, $url);
     }
 }
