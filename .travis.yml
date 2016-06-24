@@ -10,3 +10,6 @@ php:
 
 before_script:
   - composer install --no-interaction --prefer-source
+
+script:
+  - bin/phpunit --verbose --coverage-text --coverage-clover=coverage.xml
