@@ -12,7 +12,7 @@ return [
         'proxyLogin'    => '',
         'proxyPassword' => '',
         'environment'    => Env::HOMO,
-        'logPath'       => getcwd . '/data/log/payline',
+        'logPath'       => getcwd() . '/data/log/payline',
         'returnURL' => ['route' => 'home', ['action' => '']],
         'cancelURL' => ['route' => 'home', ['action' => '']],
         'notificationURL' => ['route' => 'home', ['action' => '']]
