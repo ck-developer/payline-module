@@ -1,17 +1,26 @@
 <?php
 
+/*
+ * This file is part of the Payline Module for Zend Framework 2.
+ *
+ * (c) Claude Khedhiri <claude@khedhiri.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PaylineModule\Service;
 
 class PaylineService
 {
 
     /**
-     * @var \Payline\PaylineSDK $client
+     * @var \Payline\PaylineSDK
      */
     private $client;
 
     /**
-     * @var array $config
+     * @var array
      */
     private $config;
 
@@ -41,6 +50,7 @@ class PaylineService
     private function url($name, $params, $options)
     {
         $url = $this->url;
+
         return $url($name, $params, $options);
     }
 
@@ -53,53 +63,49 @@ class PaylineService
      */
     public function doWebPayment(array $params)
     {
-
-        if(is_array($returnURL = $this->config['returnURL']))
-        {
+        if (is_array($returnURL = $this->config['returnURL'])) {
             $this->config['returnURL'] = $this->url(
                 $returnURL['route'],
                 $returnURL['params'],
-                ['force_canonical' => true]
+                array('force_canonical' => true)
             );
         }
 
-        if(is_array($cancelURL = $this->config['cancelURL']))
-        {
+        if (is_array($cancelURL = $this->config['cancelURL'])) {
             $this->config['cancelURL'] = $this->url(
                 $cancelURL['route'],
                 $cancelURL['params'],
-                ['force_canonical' => true]
+                array('force_canonical' => true)
             );
         }
 
-        if(is_array($notificationURL = $this->config['notificationURL']))
-        {
+        if (is_array($notificationURL = $this->config['notificationURL'])) {
             $this->config['notificationURL'] = $this->url(
                 $notificationURL['route'],
                 $notificationURL['params'],
-                ['force_canonical' => true]
+                array('force_canonical' => true)
             );
         }
 
-        $params = array_replace_recursive([
+        $params = array_replace_recursive(array(
             'returnURL' => $this->config['returnURL'],
             'cancelURL' => $this->config['cancelURL'],
             'notificationURL' => $this->config['notificationURL'],
-            'payment' => [
+            'payment' => array(
                 'contractNumber' => $this->config['contractNumber']
-            ],
-            'order'        => [
-                'date'     => (isset($params['order']['date']) ? $params['order']['date'] : (new \DateTime())->format('d/m/Y H:i') ),
+            ),
+            'order'        => array(
+                'date'     => (isset($params['order']['date']) ? $params['order']['date'] : (new \DateTime())->format('d/m/Y H:i')),
                 'amount'   => $params['payment']['amount'],
                 'currency' => $params['payment']['currency'],
-            ]
-        ], $params);
+            )
+        ), $params);
 
         return $this->getClient()->doWebPayment($params);
     }
 
     public function getWebPaymentDetails($token)
     {
-        return $this->getClient()->getWebPaymentDetails(['token' => $token]);
+        return $this->getClient()->getWebPaymentDetails(array('token' => $token));
     }
 }

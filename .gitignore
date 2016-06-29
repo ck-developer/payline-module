@@ -9,3 +9,4 @@ phpdox.xml
 .project
 nbproject
 tests/TestConfiguration.php
+.php_cs.cache

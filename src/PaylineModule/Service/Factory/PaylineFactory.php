@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Payline Module for Zend Framework 2.
+ *
+ * (c) Claude Khedhiri <claude@khedhiri.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PaylineModule\Service\Factory;
 
 use PaylineModule\Service\PaylineService;
@@ -13,6 +22,7 @@ class PaylineFactory implements FactoryInterface
      * Create service
      *
      * @param ServiceLocatorInterface $serviceLocator
+     *
      * @return mixed
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
@@ -22,10 +32,8 @@ class PaylineFactory implements FactoryInterface
         /** @var \Zend\View\Helper\Url $url */
         $url = $serviceLocator->get('ViewHelperManager')->get('url');
 
-        if (!file_exists($config['logPath']))
-        {
-            mkdir($config['logPath']);
-            chmod($config['logPath'], 0777);
+        if (!file_exists($config['logPath'])) {
+            mkdir($config['logPath'], 0777, true);
         }
 
         $payline = new PaylineSDK(
